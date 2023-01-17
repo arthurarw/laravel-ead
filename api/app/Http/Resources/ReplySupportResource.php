@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LessonResource extends JsonResource
+class ReplySupportResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,9 +17,10 @@ class LessonResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => ucwords(strtolower($this->name)),
             'description' => $this->description,
-            'video' => $this->video
+            'user' => new UserResource($this->user),
+            'created_at' => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)
+                ->format('d/m/Y H:i:s')
         ];
     }
 }

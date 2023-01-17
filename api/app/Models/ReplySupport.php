@@ -5,9 +5,12 @@ namespace App\Models;
 use App\Models\Traits\UuidTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Lesson extends Model
+/**
+ *
+ */
+class ReplySupport extends Model
 {
     use HasFactory, UuidTrait;
 
@@ -25,16 +28,25 @@ class Lesson extends Model
      * @var string[]
      */
     protected $fillable = [
-        'name',
+        'lesson_id',
+        'support_id',
         'description',
-        'video'
+        'user_id'
     ];
 
     /**
-     * @return HasMany
+     * @return BelongsTo
      */
-    public function supports(): HasMany
+    public function support(): BelongsTo
     {
-        return $this->hasMany(Support::class, 'lesson_id', 'id');
+        return $this->belongsTo(Support::class);
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
