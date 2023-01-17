@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\LessonController;
 use App\Http\Controllers\Api\ModuleController;
+use App\Http\Controllers\Api\ReplySupportController;
 use App\Http\Controllers\Api\SupportController;
 use Illuminate\Support\Facades\Route;
 
@@ -29,7 +30,7 @@ Route::get('/supports', [SupportController::class, 'index'])->name('supports.ind
 Route::post('/supports', [SupportController::class, 'store'])->name('supports.store');
 
 //Route::get('/supports/{support}/replies', [SupportController::class, 'getReplies'])->name('supports.get.replies');
-Route::post('/supports/{support}/replies', [SupportController::class, 'storeReply'])->name('supports.store.reply');
+Route::post('/replies', [ReplySupportController::class, 'store'])->name('reply.supports.store');
 
 
 Route::get('/', function () {

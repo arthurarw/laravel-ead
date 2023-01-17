@@ -34,6 +34,10 @@ class ReplySupport extends Model
         'user_id'
     ];
 
+    protected $touches = [
+        'support'
+    ];
+
     /**
      * @return BelongsTo
      */

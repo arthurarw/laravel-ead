@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Support;
-use App\Models\User;
+use App\Repositories\Traits\RepositoryTrait;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class SupportRepository
 {
+    use RepositoryTrait;
+
     /**
      * @param Support $entity
      */
@@ -40,6 +42,7 @@ class SupportRepository
                     $query->where('description', 'LIKE', "%{$filters['filter']}%");
                 }
             })
+            ->orderBy('updated_at')
             ->get();
     }
 
@@ -68,14 +71,4 @@ class SupportRepository
                 'lesson_id' => $support->lesson_id
             ]);
     }
-
-    /**
-     * @return User
-     */
-    private function getUserAuth(): User
-    {
-//        return auth()->user();
-        return User::first();
-    }
-
 }

@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreReplySupportRequest;
 use App\Http\Requests\StoreSupportRequest;
-use App\Http\Resources\ReplySupportResource;
 use App\Http\Resources\SupportResource;
 use App\Models\Support;
 use App\Repositories\SupportRepository;
@@ -49,15 +47,5 @@ class SupportController extends Controller
     public function getReplies(Support $support)
     {
         abort(404);
-    }
-
-    /**
-     * @param Support $support
-     * @param StoreReplySupportRequest $request
-     * @return ReplySupportResource
-     */
-    public function storeReply(Support $support, StoreReplySupportRequest $request): ReplySupportResource
-    {
-        return new ReplySupportResource($this->repository->createReplyBySupportId($support, $request->validated()));
     }
 }
