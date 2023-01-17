@@ -31,6 +31,11 @@ class SupportController extends Controller
         return SupportResource::collection($this->repository->getSupports($request->all()));
     }
 
+    public function mySupports(Request $request): AnonymousResourceCollection
+    {
+        return SupportResource::collection($this->repository->getMySupports($request->all()));
+    }
+
     /**
      * @param StoreSupportRequest $request
      * @return SupportResource

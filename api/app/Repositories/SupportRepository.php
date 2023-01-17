@@ -27,8 +27,7 @@ class SupportRepository
      */
     public function getSupports(array $filters = []): Collection|array
     {
-        return $this->getUserAuth()
-            ->supports()
+        return $this->entity
             ->where(function ($query) use ($filters) {
                 if (!empty($filters['lesson'])) {
                     $query->where('lesson_id', $filters['lesson']);
@@ -41,9 +40,24 @@ class SupportRepository
                 if (!empty($filters['filter'])) {
                     $query->where('description', 'LIKE', "%{$filters['filter']}%");
                 }
+
+                if (!empty($filters['user'])) {
+                    $user = $this->getUserAuth();
+                    $query->where('user_id', $user->id);
+                }
             })
             ->orderBy('updated_at')
             ->get();
+    }
+
+    /**
+     * @param array $filters
+     * @return Collection|array
+     */
+    public function getMySupports(array $filters = []): Collection|array
+    {
+        $filters['user'] = true;
+        return $this->getSupports($filters);
     }
 
     /**
@@ -60,6 +74,11 @@ class SupportRepository
         ]);
     }
 
+    /**
+     * @param Support $support
+     * @param array $data
+     * @return Model
+     */
     public function createReplyBySupportId(Support $support, array $data): Model
     {
         $user = $this->getUserAuth();
