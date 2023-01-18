@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\LessonController;
 use App\Http\Controllers\Api\ModuleController;
@@ -18,24 +20,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
-Route::get('/courses/{course}', [CourseController::class, 'show'])->name('courses.show');
+Route::post('/auth', [AuthController::class, 'auth'])->name('auth.auth');
+Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLink'])
+    ->name('reset.password.send.reset.link');
+Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword'])
+    ->name('reset.password.reset.password');
 
-Route::get('/courses/{course}/modules', [ModuleController::class, 'index'])->name('modules.index');
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
+    Route::get('/me', [AuthController::class, 'me'])->name('auth.me');
 
-Route::get('/modules/{module}/lessons', [LessonController::class, 'index'])->name('lessons.index');
-Route::get('/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
+    Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
+    Route::get('/courses/{course}', [CourseController::class, 'show'])->name('courses.show');
 
-Route::get('/supports/me', [SupportController::class, 'mySupports'])->name('supports.my.supports');
-Route::get('/supports', [SupportController::class, 'index'])->name('supports.index');
-Route::post('/supports', [SupportController::class, 'store'])->name('supports.store');
+    Route::get('/courses/{course}/modules', [ModuleController::class, 'index'])->name('modules.index');
 
-//Route::get('/supports/{support}/replies', [SupportController::class, 'getReplies'])->name('supports.get.replies');
-Route::post('/replies', [ReplySupportController::class, 'store'])->name('reply.supports.store');
+    Route::get('/modules/{module}/lessons', [LessonController::class, 'index'])->name('lessons.index');
+    Route::get('/lessons/{lesson}', [LessonController::class, 'show'])->name('lessons.show');
 
+    Route::get('/supports/me', [SupportController::class, 'mySupports'])->name('supports.my.supports');
+    Route::get('/supports', [SupportController::class, 'index'])->name('supports.index');
+    Route::post('/supports', [SupportController::class, 'store'])->name('supports.store');
 
-Route::get('/', function () {
-    return response()->json([
-        'ping' => 'pong'
-    ]);
+    //Route::get('/supports/{support}/replies', [SupportController::class, 'getReplies'])->name('supports.get.replies');
+    Route::post('/replies', [ReplySupportController::class, 'store'])->name('reply.supports.store');
 });
+

@@ -2,18 +2,17 @@
 
 namespace App\Repositories\Traits;
 
-use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 trait RepositoryTrait
 {
 
     /**
-     * @return User
+     * @return Authenticatable
      */
-    private function getUserAuth(): User
+    private function getUserAuth(): Authenticatable
     {
-//        return auth()->user();
-        return User::first();
+        return auth()->user();
     }
 
 }
