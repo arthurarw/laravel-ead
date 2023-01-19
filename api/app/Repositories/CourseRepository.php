@@ -3,21 +3,35 @@
 namespace App\Repositories;
 
 use App\Models\Course;
+use Illuminate\Database\Eloquent\Collection;
 
+/**
+ *
+ */
 class CourseRepository
 {
+    /**
+     * @param Course $entity
+     */
     public function __construct(protected Course $entity)
     {
     }
 
-    public function getAllCourses()
+    /**
+     * @return Collection|array
+     */
+    public function getAllCourses(): Collection|array
     {
-        return $this->entity->get();
+        return $this->entity->with('modules.lessons.views')->get();
     }
 
-    public function getCourse(Course $course)
+    /**
+     * @param Course $course
+     * @return mixed
+     */
+    public function getCourse(Course $course): mixed
     {
-        return $this->entity->findOrFail($course->id);
+        return $this->entity->with('modules.lessons')->findOrFail($course->id);
     }
 
 }

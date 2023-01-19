@@ -28,6 +28,7 @@ class SupportRepository
     public function getSupports(array $filters = []): Collection|array
     {
         return $this->entity
+            ->with('replies')
             ->where(function ($query) use ($filters) {
                 if (!empty($filters['lesson'])) {
                     $query->where('lesson_id', $filters['lesson']);
@@ -72,22 +73,5 @@ class SupportRepository
             'title' => $data['title'],
             'status' => $data['status']
         ]);
-    }
-
-    /**
-     * @param Support $support
-     * @param array $data
-     * @return Model
-     */
-    public function createReplyBySupportId(Support $support, array $data): Model
-    {
-        $user = $this->getUserAuth();
-
-        return $support->replies()
-            ->create([
-                'description' => $data['description'],
-                'user_id' => $user->id,
-                'lesson_id' => $support->lesson_id
-            ]);
     }
 }

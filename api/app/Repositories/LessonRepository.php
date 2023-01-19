@@ -27,7 +27,7 @@ class LessonRepository
      */
     public function getLessonsByModuleId(Module $module): Collection|array
     {
-        return $this->entity->where('module_id', '=', $module->id)
+        return $this->entity->with('supports.replies')->where('module_id', '=', $module->id)
             ->get();
     }
 

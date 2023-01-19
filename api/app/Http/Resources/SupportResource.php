@@ -10,7 +10,7 @@ class SupportResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     public function toArray($request)
@@ -22,8 +22,8 @@ class SupportResource extends JsonResource
             'status' => $this->status,
             'status_label' => $this->statusOptions[$this->status],
             'user' => new UserResource($this->user),
-            'lesson' => new LessonResource($this->lesson),
-            'replies' => ReplySupportResource::collection($this->replies),
+            'lesson' => new LessonResource($this->whenLoaded('lessons')),
+            'replies' => ReplySupportResource::collection($this->whenLoaded('replies')),
             'updated_at' => Carbon::make($this->updated_at)->format('d/m/Y H:i:s')
         ];
     }

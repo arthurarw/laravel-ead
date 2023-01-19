@@ -24,7 +24,7 @@ class ModuleRepository
      */
     public function getModulesCourseById(Course $course): Collection|array
     {
-        return $this->entity->with('course')
+        return $this->entity->with('lessons.views')
             ->where('course_id', '=', $course->id)
             ->get();
     }
