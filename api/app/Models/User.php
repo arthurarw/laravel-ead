@@ -58,7 +58,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function sendPasswordResetNotification($token)
+    /**
+     * @param $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token): void
     {
         $this->notify(new ResetPasswordNotification($token));
     }
@@ -69,5 +73,13 @@ class User extends Authenticatable
     public function supports(): HasMany
     {
         return $this->hasMany(Support::class, 'user_id', 'id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function views(): HasMany
+    {
+        return $this->hasMany(View::class, 'user_id', 'id');
     }
 }
