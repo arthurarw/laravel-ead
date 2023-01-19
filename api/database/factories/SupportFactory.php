@@ -2,7 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Lesson;
 use App\Models\Support;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -24,10 +26,11 @@ class SupportFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => '30818c66-205e-43e4-909c-513bbc825359',
-            'lesson_id' => '2123157e-c671-42d6-bd15-052549382198',
+            'user_id' => User::factory(),
+            'lesson_id' => Lesson::factory(),
             'description' => $this->faker->text,
-            'status' => 'P'
+            'status' => 'P',
+            'title' => $this->faker->name
         ];
     }
 }

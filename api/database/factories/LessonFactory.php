@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Lesson;
+use App\Models\Module;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -25,7 +26,7 @@ class LessonFactory extends Factory
         return [
             'name' => $name,
             'slug' => Str::slug($name),
-            'module_id' => '7c6c8c59-bfc1-4b16-9b41-9bb3087ec835',
+            'module_id' => Module::factory(),
             'video' => fake()->unique()->url()
         ];
     }

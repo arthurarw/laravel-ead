@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/auth', [AuthController::class, 'auth'])->name('auth.auth');
+
 Route::post('/forgot-password', [ResetPasswordController::class, 'sendResetLink'])
     ->name('reset.password.send.reset.link');
 Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword'])
@@ -46,5 +47,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //Route::get('/supports/{support}/replies', [SupportController::class, 'getReplies'])->name('supports.get.replies');
     Route::post('/replies', [ReplySupportController::class, 'store'])->name('reply.supports.store');
+});
+
+Route::get('/', function () {
+   return response()->json(['success' => true]);
 });
 
