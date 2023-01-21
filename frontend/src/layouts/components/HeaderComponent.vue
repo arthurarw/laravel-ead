@@ -3,7 +3,7 @@
     <nav>
       <span class="toggleMenu far fa-bars"></span>
       <span class="logo">
-        <img :src="require('@/assets/images/logo.svg')" alt="Vue.js 3 - EAD" />
+        <img src="#" alt="Vue.js 3 - EAD" />
       </span>
     </nav>
   </header>
