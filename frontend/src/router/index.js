@@ -12,16 +12,16 @@ const router = createRouter({
         {
           path: "minhas-duvidas",
           name: "campus.my.supports",
-          component: MySupports
+          component: MySupports,
         },
         {
           path: "",
           name: "campus.home",
-          component: HomeView
-        }
-      ]
-    }
-  ]
-})
+          component: HomeView,
+        },
+      ],
+    },
+  ],
+});
 
 export default router;
