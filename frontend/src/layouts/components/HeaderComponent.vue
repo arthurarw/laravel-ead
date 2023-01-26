@@ -3,7 +3,9 @@
     <nav>
       <span class="toggleMenu far fa-bars"></span>
       <span class="logo">
-        <img src="#" alt="Vue.js 3 - EAD" />
+        <router-link :to="{ name: 'campus.home' }">
+          <img src="#" alt="Vue.js 3 - EAD" />
+        </router-link>
       </span>
     </nav>
   </header>
