@@ -1,4 +1,4 @@
-import { URL_API } from "@/configs";
+import { URL_API, TOKEN_NAME } from "@/configs";
 import BaseService from "@/services/BaseService";
 
 export default class AuthService extends BaseService {
@@ -6,7 +6,22 @@ export default class AuthService extends BaseService {
     return new Promise((resolve, reject) => {
       this.request()
         .post(`${URL_API}/auth`, params)
-        .then((response) => resolve(response))
+        .then((response) => {
+          localStorage.setItem(TOKEN_NAME, response.data.token);
+          resolve(response);
+        })
+        .catch((error) => reject(error.response));
+    });
+  }
+  static async forgotPassword(email) {
+    return new Promise((resolve, reject) => {
+      this.request()
+        .post(`${URL_API}/forgot-password`, {
+          email,
+        })
+        .then((response) => {
+          resolve(response);
+        })
         .catch((error) => reject(error.response));
     });
   }

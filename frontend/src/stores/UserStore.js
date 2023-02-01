@@ -1,11 +1,10 @@
 import { defineStore } from "pinia";
 import AuthService from "@/services/AuthService";
-import {TOKEN_NAME} from "@/configs";
+import { TOKEN_NAME } from "@/configs";
 
 export const useUserStore = defineStore("user", {
   state: () => {
     return {
-      countUsers: 3,
       user: {
         id: "",
         name: "",
@@ -14,17 +13,13 @@ export const useUserStore = defineStore("user", {
       isLogged: false,
     };
   },
-  getters: {
-    getCountUsers: (state) => {
-      return state.countUsers;
-    },
-  },
+  getters: {},
   actions: {
-    incrementUsers() {
-      this.countUsers++;
-    },
     async auth(params) {
-      await AuthService.auth(params);
+      return await AuthService.auth(params);
+    },
+    async forgotPassword(email) {
+      return await AuthService.forgotPassword(email);
     },
     logout() {
       this.user.$reset();

@@ -43,7 +43,13 @@
             <form action="#" method="POST">
               <div class="groupForm">
                 <i class="far fa-envelope"></i>
-                <input type="email" name="email" placeholder="Email" required />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="E-mail"
+                  v-model="email"
+                  required
+                />
               </div>
               <div class="groupForm">
                 <i class="far fa-key"></i>
@@ -51,19 +57,25 @@
                   type="password"
                   name="password"
                   placeholder="Senha"
+                  v-model="password"
                   required
                 />
                 <i class="far fa-eye buttom"></i>
               </div>
-              <button class="btn primary" type="submit" @click.prevent="auth">
-                Login
+              <button
+                :class="['btn', 'primary', loading ? 'loading' : '']"
+                type="submit"
+                @click.prevent="auth"
+              >
+                <span v-if="loading">Enviando...</span>
+                <span v-else>Login</span>
               </button>
             </form>
             <span>
               <p class="fontSmall">
                 Esqueceu sua senha?
                 <router-link
-                  :to="{ name: 'forget.password' }"
+                  :to="{ name: 'forgot.password' }"
                   class="link primary"
                   >Clique aqui</router-link
                 >
@@ -80,8 +92,9 @@
 </template>
 
 <script>
-import router from "@/router";
 import { useUserStore } from "@/stores/UserStore";
+import { ref } from "vue";
+import router from "@/router";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -89,20 +102,29 @@ export default {
 
   setup() {
     const userStore = useUserStore();
-
-    const login = () => router.push({ name: "campus.home" });
+    const email = ref("");
+    const password = ref("");
+    const loading = ref(false);
 
     const auth = () => {
-      userStore.auth({
-        email: "arthur@mail.com",
-        password: "321321",
-        device_name: "Chrome-PC-Arthur",
-      });
+      loading.value = true;
+
+      userStore
+        .auth({
+          email: email.value,
+          password: password.value,
+          device_name: "Chrome-PC-Arthur",
+        })
+        .then(() => router.push({ name: "campus.home" }))
+        .catch((error) => console.log(error))
+        .finally(() => (loading.value = false));
     };
 
     return {
-      login,
       auth,
+      email,
+      password,
+      loading,
     };
   },
 };

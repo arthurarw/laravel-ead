@@ -43,12 +43,25 @@
               Acesse nossa plataforma e desfrute de cursos completos para sua
               especialização.
             </span>
-            <form action="/dist/index.html" method="">
+            <form action="#" method="POST">
               <div class="groupForm">
                 <i class="far fa-envelope"></i>
-                <input type="email" name="email" placeholder="Email" required />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  v-model="email"
+                  required
+                />
               </div>
-              <button class="btn primary" type="submit">Recuperar Senha</button>
+              <button
+                :class="['btn', 'primary', loading ? 'loading' : '']"
+                type="submit"
+                @click.prevent="forgotPassword"
+              >
+                <span v-if="loading">Enviando...</span>
+                <span v-else>Recuperar Senha</span>
+              </button>
             </form>
             <span>
               <p class="fontSmall">
@@ -69,8 +82,34 @@
 </template>
 
 <script>
+import { useUserStore } from "@/stores/UserStore";
+import { ref } from "vue";
+import router from "@/router";
+
 export default {
-  name: "ForgetPassword",
+  name: "ForgotPassword",
+  setup() {
+    const userStore = useUserStore();
+
+    const email = ref("");
+    const loading = ref(false);
+
+    const forgotPassword = () => {
+      loading.value = true;
+
+      userStore
+        .forgotPassword(email.value)
+        .then(() => router.push({ name: "campus.home" }))
+        .catch((error) => alert(error.data.email))
+        .finally(() => (loading.value = false));
+    };
+
+    return {
+      forgotPassword,
+      email,
+      loading,
+    };
+  },
 };
 </script>
 
