@@ -55,7 +55,7 @@
                 />
                 <i class="far fa-eye buttom"></i>
               </div>
-              <button class="btn primary" type="submit" @click.prevent="login">
+              <button class="btn primary" type="submit" @click.prevent="auth">
                 Login
               </button>
             </form>
@@ -81,16 +81,28 @@
 
 <script>
 import router from "@/router";
+import { useUserStore } from "@/stores/UserStore";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Auth",
 
   setup() {
+    const userStore = useUserStore();
+
     const login = () => router.push({ name: "campus.home" });
+
+    const auth = () => {
+      userStore.auth({
+        email: "arthur@mail.com",
+        password: "321321",
+        device_name: "Chrome-PC-Arthur",
+      });
+    };
 
     return {
       login,
+      auth,
     };
   },
 };

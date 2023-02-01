@@ -4,7 +4,7 @@
       <span class="toggleMenu far fa-bars"></span>
       <span class="logo">
         <router-link :to="{ name: 'campus.home' }">
-          <img src="#" alt="Vue.js 3 - EAD" />
+          <img :src="require('@/assets/images/logo.svg')" alt="EspecializaTi" />
         </router-link>
       </span>
     </nav>
