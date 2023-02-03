@@ -65,22 +65,12 @@
               <button
                 :class="['btn', 'primary', loading ? 'loading' : '']"
                 type="submit"
-                @click.prevent="auth"
+                @click.prevent="resetPassword"
               >
-                <span v-if="loading">Enviando...</span>
-                <span v-else>Login</span>
+                <span v-if="loading">Alterando...</span>
+                <span v-else>Atualizar Senha</span>
               </button>
             </form>
-            <span>
-              <p class="fontSmall">
-                Esqueceu sua senha?
-                <router-link
-                  :to="{ name: 'forgot.password' }"
-                  class="link primary"
-                  >Clique aqui</router-link
-                >
-              </p>
-            </span>
           </div>
           <span class="copyright fontSmall">
             Todos os Direitos reservados - <b>Especializati</b>
@@ -92,35 +82,50 @@
 </template>
 
 <script>
-import { useUserStore } from "@/stores/UserStore";
 import { ref } from "vue";
 import router from "@/router";
+import AuthService from "@/services/AuthService";
 import { notify } from "@kyvg/vue3-notification";
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
-  name: "Auth",
-
-  setup() {
-    const userStore = useUserStore();
+  name: "ResetPassword",
+  props: {
+    token: {
+      require: true,
+    },
+  },
+  setup(props) {
     const email = ref("");
     const password = ref("");
     const loading = ref(false);
 
-    const auth = () => {
+    const resetPassword = () => {
       loading.value = true;
 
-      userStore
-        .auth({
-          email: email.value,
-          password: password.value,
-          device_name: "Chrome-PC-Arthur",
+      AuthService.resetPassword(email.value, password.value, props.token)
+        .then(() => {
+          notify({
+            title: "Senha alterada com sucesso!",
+            text: "Você pode acessar novamente com sua nova senha.",
+            type: "success",
+          });
+          router.push({ name: "auth" });
         })
-        .then(() => router.push({ name: "campus.home" }))
         .catch((error) => {
-          let msgError = "Falha na requisição.";
-          if (error.status === 422) {
-            msgError = error.data.message;
+          let msgError = "Falha ao alterar a senha.";
+          let data = error.data;
+
+          if (data.email) {
+            msgError = data.email;
+          }
+
+          if (data.token) {
+            msgError = data.token;
+          }
+
+          if (data.password) {
+            msgError = data.password;
           }
 
           notify({
@@ -133,7 +138,7 @@ export default {
     };
 
     return {
-      auth,
+      resetPassword,
       email,
       password,
       loading,

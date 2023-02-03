@@ -85,6 +85,7 @@
 import { useUserStore } from "@/stores/UserStore";
 import { ref } from "vue";
 import router from "@/router";
+import { notify } from "@kyvg/vue3-notification";
 
 export default {
   name: "ForgotPassword",
@@ -99,8 +100,20 @@ export default {
 
       userStore
         .forgotPassword(email.value)
-        .then(() => router.push({ name: "campus.home" }))
-        .catch((error) => alert(error.data.email))
+        .then(() => {
+          notify({
+            title: "E-mail enviado com sucesso!",
+            text: "Verifique sua caixa de entrada ou SPAM.",
+            type: "success",
+          });
+        })
+        .catch((error) => {
+          notify({
+            title: "Ooops!!",
+            text: error.data.message ?? error.data.email,
+            type: "error",
+          });
+        })
         .finally(() => (loading.value = false));
     };
 

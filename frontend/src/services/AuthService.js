@@ -25,4 +25,19 @@ export default class AuthService extends BaseService {
         .catch((error) => reject(error.response));
     });
   }
+
+  static async resetPassword(email, password, token) {
+    return new Promise((resolve, reject) => {
+      this.request()
+        .post(`${URL_API}/reset-password`, {
+          email,
+          password,
+          token,
+        })
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => reject(error.response));
+    });
+  }
 }
