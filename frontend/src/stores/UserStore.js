@@ -16,7 +16,16 @@ export const useUserStore = defineStore("user", {
   getters: {},
   actions: {
     async auth(params) {
-      return await AuthService.auth(params);
+      return await AuthService.auth(params)
+        .then((response) => {
+          this.user = response.data;
+          this.isLogged = true;
+        })
+        .catch((error) => {
+          this.user.$reset();
+          this.isLogged = false;
+          console.log(error);
+        });
     },
     async forgotPassword(email) {
       return await AuthService.forgotPassword(email);
