@@ -5,6 +5,8 @@ export const useCourseStore = defineStore("course", {
   state: () => {
     return {
       courses: [],
+      course: {},
+      lesson: {},
     };
   },
   getters: {},
