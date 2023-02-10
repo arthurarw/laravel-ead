@@ -1,52 +1,37 @@
 <template>
   <div class="content">
-    <div class="card">
+    <div class="card" v-for="support in supports.data" :key="support.id">
       <div class="commentContent main">
         <span class="avatar">
-          <img src="images/avatars/user01.svg" alt="" />
-        </span>
-        <span class="comment">
-          <div class="balloon">
-            <span class="fas fa-sort-down"></span>
-            <span class="owner">Fernando - 07/10/2021</span>
-            <span class="text">
-              Donec ligula libero, sollicitudin vel libero vel, mollis porttitor
-              turpis. Cras mattis turpis massa, sit amet fringilla diam auctor
-              ac. Integer sit amet rutrum risus. In eleifend urna sapien,
-              faucibus pharetra justo luctus quis. Vivamus eleifend fringilla
-              massa
-            </span>
-          </div>
-        </span>
-        <button class="btn primary">Ver respostas</button>
-      </div>
-    </div>
-    <div class="card">
-      <div class="commentContent main">
-        <span class="avatar">
-          <img src="images/avatars/user01.svg" alt="" />
+          <img src="images/avatars/user01.svg" :alt="support.user.name" />
         </span>
         <div class="comment">
           <div class="balloon">
             <span class="fas fa-sort-down"></span>
-            <span class="owner">Fernando - 07/10/2021</span>
+            <span class="owner">
+              {{ support.user.name }} - {{ support.updated_at }}
+            </span>
             <span class="text">
-              In eleifend urna sapien, faucibus pharetra justo luctus quis.
-              Vivamus eleifend fringilla massa
+              {{ support.description }}
             </span>
           </div>
         </div>
         <button class="btn primary">Ocultar respostas</button>
       </div>
-      <div class="answersContent">
+      <div
+        class="answersContent"
+        v-for="reply in support.replies"
+        :key="reply.id"
+      >
         <div class="commentContent rightContent">
           <div class="comment">
             <div class="balloon">
               <span class="fas fa-sort-down"></span>
-              <span class="owner">Carlos Ferreira - 07/10/2021</span>
+              <span class="owner"
+                >{{ reply.user.name }} - {{ reply.created_at }}</span
+              >
               <span class="text">
-                In eleifend urna sapien, faucibus pharetra justo luctus quis.
-                Vivamus eleifend fringilla massa
+                {{ reply.description }}
               </span>
             </div>
           </div>
@@ -74,32 +59,23 @@
         </span>
       </div>
     </div>
-    <div class="card">
-      <div class="commentContent main">
-        <span class="avatar">
-          <img src="images/avatars/user02.svg" alt="" />
-        </span>
-        <span class="comment">
-          <div class="balloon">
-            <span class="fas fa-sort-down"></span>
-            <span class="owner">João - 06/10/2021</span>
-            <span class="text">
-              Integer scelerisque placerat molestie. Vivamus dignissim bibendum
-              sapien, non suscipit arcu lobortis nec. Donec eros est, mollis
-              quis nibh quis, pellentesque suscipit libero.
-            </span>
-          </div>
-        </span>
-        <button class="btn primary">Ver respostas</button>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
+import { useSupportStore } from "@/stores/SupportStore";
+import { computed } from "vue";
+
 export default {
   name: "Supports",
+  setup() {
+    const supportStore = useSupportStore();
+
+    const supports = computed(() => supportStore.supports);
+
+    return {
+      supports,
+    };
+  },
 };
 </script>
-
-<style scoped></style>
