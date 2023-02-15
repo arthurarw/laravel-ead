@@ -82,7 +82,7 @@ section#loginPage {
           padding: 0 2rem;
 
           span {
-            font-size: 14px;
+            font-size: 12px;
             text-align: center;
           }
 
@@ -202,6 +202,32 @@ section#loginPage {
   }
 }
 
+ul#mainMenu {
+  background: #8331a5;
+  min-height: calc(100vh - #{$navSize});
+  width: 220px;
+  padding: 70px 1rem 0 1rem;
+  position: fixed;
+  z-index: 99;
+
+  li {
+    margin: 8px 0;
+
+    a {
+      color: #FFF;
+      text-decoration: none;
+      display: block;
+      padding: 10px 10px;
+      transition: all .5s;
+      border-radius: 10px;
+
+      &:hover {
+        background-color: rgb(183 183 183 / 28%);
+      }
+    }
+  }
+}
+
 header#header {
   nav {
     height: 70px;
@@ -262,6 +288,7 @@ body.page {
         color: white;
         margin-bottom: 0.5rem;
         font-size: 15px;
+        padding: 0 1rem;
       }
 
       .subtitle {
@@ -382,6 +409,14 @@ body.page {
   }
 }
 
+.description-lesson{
+  background-color: #464646;
+  padding: 10px;
+  color: #FFF;
+  border-radius: 5px;
+  margin: 6px 0 40px 0;
+}
+
 section .container {
   display: flex;
   width: 100%;
@@ -402,7 +437,7 @@ section .container {
         justify-content: space-between;
         align-items: center;
         border-radius: 10px 10px 0 0;
-        height: 60px;
+        min-height: 60px;
         color: white;
         padding: 0 1rem;
 
@@ -439,6 +474,8 @@ section .container {
           .icon {
             height: 6px;
             line-height: 0;
+            transform: rotate(-90deg);
+            transition: all .3s;
           }
 
           &:hover {
@@ -454,7 +491,7 @@ section .container {
             color: white;
             padding: 0 1rem;
             background-color: $backgroundList;
-            height: 40px;
+            min-height: 40px;
             margin-bottom: 3px;
             transition: background-color 0.5s;
 
@@ -468,8 +505,8 @@ section .container {
 
             .nameLesson {
               width: 100%;
-              padding: 0 1rem;
-              font-size: 14px;
+              padding: 5px 1rem;
+              font-size: 13px;
               font-weight: 300;
             }
 
@@ -494,15 +531,22 @@ section .container {
             }
           }
         }
+
+        &.active {
+
+          .name {
+            background-color: $backgroundBold;
+
+            .icon {
+              transform: rotate(0);
+            }
+          }
+        }
       }
     }
 
     @include respond-to("extra-big") {
       width: 30%;
-    }
-
-    @include respond-to("big") {
-      display: none;
     }
   }
 
@@ -515,10 +559,11 @@ section .container {
 
       .training {
         height: calc(100vh - #{$trainingSpace});
+        max-height: 755px;
 
         .card {
           border-radius: 10px 10px 0 0;
-          height: 60px;
+          min-height: 60px;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -539,6 +584,7 @@ section .container {
             color: white;
             font-size: 15px;
             width: 100%;
+            padding: 10px 0;
           }
 
           .btn {
@@ -549,7 +595,9 @@ section .container {
 
         iframe {
           height: calc(100vh - (#{$trainingSpace} + 60px));
+          max-height: 700px;
           border-radius: 0 0 10px 10px;
+          background-color: black;
 
           @include respond-to("extra-big") {
             height: 470px;
@@ -565,7 +613,7 @@ section .container {
         }
 
         @include respond-to("big") {
-          height: 400px;
+          height: 425px;
         }
       }
 
@@ -633,6 +681,12 @@ section .container {
 
                   .text {
                     font-size: 15px;
+                  }
+
+                  pre {
+                    display: block;
+                    white-space: pre-wrap;
+                    word-break: break-word;
                   }
 
                   span.fas {
@@ -747,6 +801,16 @@ section .container {
 
     @include respond-to("big") {
       width: 100%;
+    }
+  }
+
+  @include respond-to("big") {
+    flex-direction: column;
+
+    .left {
+      width: 100%;
+      min-height: auto;
+      margin-bottom: 1rem;
     }
   }
 }

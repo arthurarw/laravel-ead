@@ -23,7 +23,8 @@
             >Ocultar respostas</span
           >
           <span v-else @click.prevent="showSupport = support.id"
-            >Exibir respostas (total: {{ support.replies.length ?? 0 }})</span
+            >Exibir respostas (total:
+            {{ support.replies ? support.replies.length : 0 }})</span
           >
         </button>
       </div>

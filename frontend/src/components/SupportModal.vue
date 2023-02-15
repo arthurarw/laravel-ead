@@ -1,0 +1,132 @@
+<template>
+  <!--  <transition name="fade">-->
+  <div v-if="showModal" class="modal-mask">
+    <div class="modal-wrapper">
+      <div class="modal-container">
+        <div class="modal-title">
+          <div class="modal-header">
+            <h3 v-if="!supportReply">Nova dúvida</h3>
+            <h3 v-else>Responder para o ticket {{ supportReply }}</h3>
+            <i
+              class="close fas fa-times"
+              title="Cancelar"
+              @click="$emit('closeModal')"
+            ></i>
+          </div>
+          <div class="details">
+            <span
+              ><small
+                >Total de caracteres: {{ description.length }}</small
+              ></span
+            >
+            <span
+              ><small>(mínimo <b>4</b> e máximo <b>10k</b>)</small></span
+            >
+          </div>
+        </div>
+        <div class="modal-body">
+          <form action="#" method="post" @submit.prevent="sendForm">
+            <div class="groupForm">
+              <textarea
+                name="description"
+                v-model="description"
+                placeholder="Descreva sua mensagem"
+                autofocus
+                @keydown.esc="$emit('closeModal')"
+              ></textarea>
+            </div>
+
+            <button class="btn reverse" @click.prevent="$emit('closeModal')">
+              <i class="fas fa-times"></i> Cancelar
+            </button>
+            <button
+              v-if="description.length > 3"
+              class="btn primary text-white animate__animated animate__bounceIn"
+              :class="{ disabled: loading }"
+              :disabled="loading"
+              type="submit"
+            >
+              <i class="fas fa-check"></i>
+              <span v-if="loading">Enviando...</span>
+              <span v-else>Enviar</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--  </transition>-->
+</template>
+
+<script>
+import { computed, ref } from "vue";
+import { useCourseStore } from "@/stores/CourseStore";
+import { useSupportStore } from "@/stores/SupportStore";
+import { notify } from "@kyvg/vue3-notification";
+
+export default {
+  name: "SupportModal",
+  props: {
+    showModal: {
+      require: true,
+      default: false,
+      type: Boolean,
+    },
+    supportReply: {
+      require: true,
+      type: String,
+      default: "",
+    },
+  },
+  emits: ["closeModal"],
+  setup(props, { emit }) {
+    const courseStore = useCourseStore();
+    const supportStore = useSupportStore();
+
+    const description = ref("");
+    const loading = ref(false);
+    const lesson = computed(() => courseStore.lesson);
+
+    const sendForm = () => {
+      loading.value = true;
+      const params = {
+        title: "Bla bla vue3",
+        lesson: lesson.value.id,
+        description: description.value,
+        status: "P",
+        support: props.supportReply,
+      };
+
+      supportStore
+        .storeSupport(params)
+        .then(() => {
+          description.value = "";
+
+          emit("closeModal");
+
+          notify({
+            title: "Dúvida cadastrada com sucesso!",
+            text: "Agora só aguardar alguém responsável pelo suporte responder sua dúvida :)",
+            type: "success",
+          });
+        })
+        .finally(() => {
+          loading.value = false;
+        });
+
+      /*let actionName = "createSupport";
+      if (props.supportReply !== "") {
+        actionName = "createNewReplyToSupport";
+      }*/
+    };
+
+    return {
+      description,
+      loading,
+      sendForm,
+    };
+  },
+};
+</script>
+
+<style scoped></style>

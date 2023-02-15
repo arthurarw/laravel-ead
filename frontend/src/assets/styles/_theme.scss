@@ -14,6 +14,7 @@ $primaryLight: #b77dcf;
 $grayLight: #dbdbdb;
 
 $backgroundDark: #272727;
+$backgroundBold: #363636;
 $backgroundLight: #464646;
 $backgroundList: #404040;
 $backgroundThin: #e1e1e1;
@@ -75,14 +76,19 @@ body {
   }
 }
 
+.disabled {
+  background-color: #747474cc !important;
+  cursor: no-drop;
+}
+
 ul {
   list-style: none;
 }
 
 // Util classes
 .logo img {
-    width: 200px;
-    height: auto;
+  width: 200px;
+  height: auto;
 }
 
 .btn {
@@ -142,6 +148,14 @@ ul {
 
     &:hover {
       background-color: $flutterColorButtonLight;
+    }
+  }
+
+  &.reverse {
+    color: $textColor;
+
+    &:hover {
+      background-color: $textColorLight;
     }
   }
 }
@@ -219,6 +233,16 @@ i.buttom {
     }
   }
 
+  textarea {
+    width: 100%!important;
+    min-height: 150px;
+    border: none;
+    outline: none;
+    text-indent: 10px;
+    padding-top: 5px;
+    font-family: $defaultFont!important;
+  }
+
   i {
     color: $iconColor;
     margin: 0 5px;
@@ -249,4 +273,77 @@ i.buttom {
 
 .fontSmall {
   font-size: 10px!important;
+}
+
+.modal-mask {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .modal-wrapper {
+    @include respond-to("medium") {
+      width: 100%;
+      display: flex;
+      justify-self: center;
+      align-items: center;
+      padding: 1rem;
+    }
+  }
+
+  .modal-container {
+    width: 600px;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: $defaultShadow;
+
+    @include respond-to("medium") {
+      width: 100%;
+    }
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: $textColor;
+
+    .close {
+      cursor: pointer;
+      color: $textColor;
+    }
+  }
+
+  .details {
+    color: $textColor;
+    display: flex;
+    justify-content: space-between;
+    margin-top: .5rem;
+  }
+
+  .modal-body {
+    margin: 1rem 0;
+    margin-bottom: 0;
+  }
+
+  textarea:focus {
+    background: none repeat scroll 0 0 white;
+    outline-width: 0;
+  }
+
+  button {
+    width: auto;
+    margin-right: .5rem;
+  }
+
+  @include respond-to("medium") {
+
+  }
 }

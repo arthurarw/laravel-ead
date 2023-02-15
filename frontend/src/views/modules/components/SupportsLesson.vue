@@ -5,12 +5,17 @@
         >Dúvidas (total: {{ supports.length }})
         <span v-if="loading">Carregando...</span></span
       >
-      <button class="btn primary">
+      <button class="btn primary" @click.prevent="modal.showModal = true">
         <i class="fas fa-plus"></i>
         Enviar nova dúvida
       </button>
     </div>
     <supports />
+    <support-modal
+      @close-modal="modal.showModal = false"
+      :show-modal="modal.showModal"
+      :support-reply="modal.supportReply"
+    />
   </div>
 </template>
 
@@ -19,10 +24,11 @@ import Supports from "@/components/Supports.vue";
 import { useCourseStore } from "@/stores/CourseStore";
 import { computed, watch, ref } from "vue";
 import { useSupportStore } from "@/stores/SupportStore";
+import SupportModal from "@/components/SupportModal.vue";
 
 export default {
   name: "SupportsLesson",
-  components: { Supports },
+  components: { Supports, SupportModal },
   setup() {
     const courseStore = useCourseStore();
     const supportStore = useSupportStore();
@@ -31,6 +37,11 @@ export default {
     const supports = computed(() => supportStore.supports.data);
 
     const loading = ref(false);
+
+    const modal = ref({
+      showModal: false,
+      supportReply: "",
+    });
 
     watch(
       () => courseStore.lesson,
@@ -46,6 +57,7 @@ export default {
       lesson,
       loading,
       supports,
+      modal,
     };
   },
 };

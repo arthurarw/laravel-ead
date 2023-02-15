@@ -27,6 +27,14 @@ export const useSupportStore = defineStore("support", {
         .catch((error) => console.log(error));
     },
 
+    async storeSupport(params) {
+      return await SupportService.storeSupport(params)
+        .then((response) => {
+          this.addNewSupport(response.data);
+        })
+        .catch((error) => console.log(error));
+    },
+
     addNewSupport(support) {
       this.supports.data.unshift(support);
     },
