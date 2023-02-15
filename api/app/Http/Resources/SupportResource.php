@@ -23,7 +23,8 @@ class SupportResource extends JsonResource
             'status_label' => $this->statusOptions[$this->status],
             'user' => new UserResource($this->user),
             'lesson' => new LessonResource($this->whenLoaded('lessons')),
-            'replies' => ReplySupportResource::collection($this->whenLoaded('replies')),
+            //'replies' => ReplySupportResource::collection($this->whenLoaded('replies')),
+            'replies' => ReplySupportResource::collection($this->replies),
             'updated_at' => Carbon::make($this->updated_at)->format('d/m/Y H:i:s')
         ];
     }
