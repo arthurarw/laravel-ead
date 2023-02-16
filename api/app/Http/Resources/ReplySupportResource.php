@@ -19,7 +19,7 @@ class ReplySupportResource extends JsonResource
             'id' => $this->id,
             'description' => $this->description,
             'user' => new UserResource($this->user),
-            'support' => new SupportResource($this->whenLoaded('support')),
+            'support_id' => $this->support->id,
             'created_at' => Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)
                 ->format('d/m/Y H:i:s')
         ];
