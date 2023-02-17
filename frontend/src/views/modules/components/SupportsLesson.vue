@@ -5,7 +5,7 @@
         >Dúvidas (total: {{ supports.length }})
         <span v-if="loading">Carregando...</span></span
       >
-      <button class="btn primary" @click.prevent="modal.showModal = true">
+      <button class="btn primary" @click.prevent="createNewSupport">
         <i class="fas fa-plus"></i>
         Enviar nova dúvida
       </button>
@@ -53,11 +53,17 @@ export default {
       }
     );
 
+    const createNewSupport = () => {
+      modal.value.showModal = true;
+      modal.value.supportReply = "";
+    };
+
     return {
       lesson,
       loading,
       supports,
       modal,
+      createNewSupport,
     };
   },
 };

@@ -13,7 +13,6 @@ export const useSupportStore = defineStore("support", {
           last_page: 1,
         },
       },
-      userSupports: [],
     };
   },
   getters: {},
@@ -41,6 +40,31 @@ export const useSupportStore = defineStore("support", {
 
     clearSupports() {
       this.supports.$reset();
+    },
+
+    async storeReplySupport(params) {
+      return await SupportService.storeReplySupport(params)
+        .then((response) => {
+          const supports = this.supports.data;
+          const supportId = response.data.support_id;
+
+          supports.forEach((support, index) => {
+            if (support.id === supportId) {
+              supports[index].replies.push(response.data);
+            }
+          });
+
+          this.supports.data = supports;
+        })
+        .catch((error) => console.log(error));
+    },
+
+    async getMySupports(params) {
+      return await SupportService.getMySupports(params)
+        .then((response) => {
+          this.supports = response;
+        })
+        .catch((error) => console.log(error));
     },
   },
 });

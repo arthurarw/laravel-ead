@@ -6,7 +6,7 @@
         <div class="modal-title">
           <div class="modal-header">
             <h3 v-if="!supportReply">Nova dúvida</h3>
-            <h3 v-else>Responder para o ticket {{ supportReply }}</h3>
+            <h3 v-else>Responder para o ticket</h3>
             <i
               class="close fas fa-times"
               title="Cancelar"
@@ -89,35 +89,53 @@ export default {
 
     const sendForm = () => {
       loading.value = true;
+
       const params = {
-        title: "Bla bla vue3",
+        title: null,
         lesson: lesson.value.id,
         description: description.value,
         status: "P",
         support: props.supportReply,
       };
 
-      supportStore
-        .storeSupport(params)
-        .then(() => {
-          description.value = "";
+      if (!props.supportReply) {
+        params.title = "AJEIUOAEHJAIUEHA";
 
-          emit("closeModal");
+        supportStore
+          .storeSupport(params)
+          .then(() => {
+            description.value = "";
 
-          notify({
-            title: "Dúvida cadastrada com sucesso!",
-            text: "Agora só aguardar alguém responsável pelo suporte responder sua dúvida :)",
-            type: "success",
+            emit("closeModal");
+
+            notify({
+              title: "Dúvida cadastrada com sucesso!",
+              text: "Agora só aguardar alguém responsável pelo suporte responder sua dúvida :)",
+              type: "success",
+            });
+          })
+          .finally(() => {
+            loading.value = false;
           });
-        })
-        .finally(() => {
-          loading.value = false;
-        });
+      } else {
+        console.log(params, supportStore);
+        supportStore
+          .storeReplySupport(params)
+          .then(() => {
+            description.value = "";
 
-      /*let actionName = "createSupport";
-      if (props.supportReply !== "") {
-        actionName = "createNewReplyToSupport";
-      }*/
+            emit("closeModal");
+
+            notify({
+              title: "Resposta cadastrada com sucesso!",
+              text: "Agora só aguardar alguém responsável pelo suporte responder sua dúvida :)",
+              type: "success",
+            });
+          })
+          .finally(() => {
+            loading.value = false;
+          });
+      }
     };
 
     return {

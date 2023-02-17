@@ -56,10 +56,20 @@
           </span>
         </div>
         <span class="answer">
-          <button class="btn primary">Responder</button>
+          <button
+            class="btn primary"
+            @click.prevent="openModalReplySupport(support.id)"
+          >
+            Responder
+          </button>
         </span>
       </div>
     </div>
+    <support-modal
+      @close-modal="modal.showModal = false"
+      :show-modal="modal.showModal"
+      :support-reply="modal.supportReply"
+    />
   </div>
 </template>
 
@@ -68,9 +78,11 @@ import { useSupportStore } from "@/stores/SupportStore";
 import { computed, ref } from "vue";
 import UserImage from "@/assets/images/avatars/user01.svg";
 import UserImageTwo from "@/assets/images/avatars/user02.svg";
+import SupportModal from "@/components/SupportModal.vue";
 
 export default {
   name: "Supports",
+  components: { SupportModal },
   setup() {
     const supportStore = useSupportStore();
 
@@ -78,11 +90,24 @@ export default {
 
     const supports = computed(() => supportStore.supports);
 
+    const modal = ref({
+      showModal: false,
+      supportReply: "",
+      supportReplyTitle: "",
+    });
+
+    const openModalReplySupport = (supportId) => {
+      modal.value.showModal = true;
+      modal.value.supportReply = supportId;
+    };
+
     return {
       supports,
       UserImage,
       UserImageTwo,
       showSupport,
+      modal,
+      openModalReplySupport,
     };
   },
 };
